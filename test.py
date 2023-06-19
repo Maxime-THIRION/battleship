@@ -1,6 +1,6 @@
 # importation des bibliothèques
 import random
-from affichage_grille import *
+from affGrille import * 
 
 # définition des grilles de jeu
 COLONNES = {'A':0, 'B':1, 'C':2, 'D':3, 'E':4, 'F':5, 'G':6, 'H':7, 'I':8, 'J':9}
@@ -116,6 +116,7 @@ def Placement_bateau_player(bateaux):
 		taille=NAVIRES[bateau]
 		print("\nVous allez placer le bateau :", bateau, "de longueur", taille, "case.\n")
 		affichage_grille_bateau(bateaux)
+                
 		possible = 0
 		while possible != 1:
 			x=str(input("\nEntrez ici la lettre souhaitée :"))
@@ -154,6 +155,7 @@ def Placement_bateau_player(bateaux):
 			if possible == 0:
 				print("Erreur dans le placement, recommencez votre placement !")
 		Init_placement_bateaux(x, y, bateau, sens, bateaux, 'player')
+        # affichage_grille_bateau(bateaux)        
 	return bateaux
 
 

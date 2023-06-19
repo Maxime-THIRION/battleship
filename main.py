@@ -32,3 +32,7 @@ main_loop(largeur, hauteur)
 
 # Quitter Pygame
 pygame.quit()
+
+
+
+
