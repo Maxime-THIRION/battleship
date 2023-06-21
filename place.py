@@ -1,5 +1,6 @@
 import pygame
 from Play import *
+import time
 
 
 COLONNES = {'A':0, 'B':1, 'C':2, 'D':3, 'E':4, 'F':5, 'G':6, 'H':7, 'I':8, 'J':9}
@@ -28,8 +29,8 @@ def placement_bateaux():
     pygame.init()
 
     # Définir les dimensions de la fenêtre
-    largeur = 700
-    hauteur = 850
+    largeur = 600
+    hauteur = 700
     fenetre = pygame.display.set_mode((largeur, hauteur))
     pygame.display.set_caption("Placement des Bateaux")
 
@@ -60,6 +61,10 @@ def placement_bateaux():
     # Variables de contrôle du placement
     placement_termine = False
 
+    # Variables pour afficher le message
+    afficher_message = False
+    debut_affichage_message = 0
+
     # Boucle principale
     running = True
     while running:
@@ -73,7 +78,7 @@ def placement_bateaux():
                 if not placement_termine:
                     # Récupérer les coordonnées de la case cliquée
                     x, y = event.pos
-                    ligne = (y-150) // taille_case
+                    ligne = (y-100) // taille_case
                     colonne = x // taille_case
 
                     # while verifier_superposition(grille, colonne, ligne, taille_bateau, orientation_bateau):
@@ -85,6 +90,8 @@ def placement_bateaux():
                     if verifier_superposition(grille, colonne, ligne, taille_bateau, orientation_bateau):
                         superposition = True  # Superposition détectée
                         print("Veuillez choisir une autre case")
+                        afficher_message = True
+                        debut_affichage_message = time.time() 
                         break  # Sortir de la boucle for
                     
                     # Placer le bateau à l'emplacement choisi
@@ -110,7 +117,7 @@ def placement_bateaux():
         for ligne in range(nb_lignes):
             for colonne in range(nb_colonnes):
                 x = colonne * taille_case
-                y = ligne * taille_case + 150
+                y = ligne * taille_case + 100
 
                 pygame.draw.rect(fenetre, COULEUR_GRILLE, (x, y, taille_case, taille_case), 1)
 
@@ -119,7 +126,7 @@ def placement_bateaux():
             for colonne in range(nb_colonnes):
                 if grille[ligne][colonne] == 1:
                     x = colonne * taille_case
-                    y = ligne * taille_case + 150
+                    y = ligne * taille_case + 100
                     pygame.draw.rect(fenetre, COULEUR_BATEAU, (x, y, taille_case, taille_case))
 
         # Afficher le bateau à placer
@@ -139,8 +146,20 @@ def placement_bateaux():
 
         # Afficher le texte de confirmation
         if placement_termine:
-            texte_confirmation = police.render("Placement terminé !", True, COULEUR_TEXTE)
+            texte_confirmation = police.render("Placement terminé ! Appuyez sur Entrée", True, COULEUR_TEXTE)
             fenetre.blit(texte_confirmation, (20, 80))
+        else :
+            texte_confirmation = police.render("'v' pour placr verticalement et 'h' pour placer horizontalement ", True, COULEUR_TEXTE)
+            fenetre.blit(texte_confirmation, (20, 80))
+
+        # Afficher le message de superposition
+        if afficher_message:
+            message_texte = "Placement impossible !"
+            texte_message = pygame.font.Font(None, 36).render(message_texte, True, (255, 0, 0))
+            fenetre.blit(texte_message, ((largeur//2)-120, hauteur//2))
+            # Vérifier si le temps d'affichage du message est écoulé
+            if time.time() - debut_affichage_message > 1.5:
+                afficher_message = False
 
         # Mettre à jour l'affichage
         pygame.display.flip()
