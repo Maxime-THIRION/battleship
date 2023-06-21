@@ -26,13 +26,13 @@ def play(largeur, hauteur):
                 
             
             # Afficher les autres lignes de texte en utilisant la fonction afficher_texte()
-            background = pygame.image.load("images/background2.jpeg").convert()
+            background = pygame.image.load("images/play.jpg").convert()
             background = pygame.transform.scale(background, (largeur, hauteur))
             screen.blit(background, (0, 0))
 
             pygame.display.flip()
 
-            Placement_bateau_player(bateaux_player)
+            #Placement_bateau_player(bateaux_player)
 
             
 
