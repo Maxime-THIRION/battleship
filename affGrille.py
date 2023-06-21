@@ -4,6 +4,7 @@ import time
 from tir import * 
 from test import partie_finie  
 from finpartie import *
+from checkcoule import *
 
 
 
@@ -32,6 +33,10 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
     # Initialiser les cases choisies
     cases_choisies = [[False] * nb_colonnes for _ in range(nb_lignes)]
 
+    # Variables pour afficher le message
+    afficher_message_pla = 0
+    debut_affichage_message_pla = 0 
+
     # Boucle principale
     running = True
     while running:
@@ -56,12 +61,24 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
                         if tir(ligne, colonne, bateaux_ia)==True: 
                             print("Touché !")
                             grille_tir_pla[ligne][colonne] = 1  # Mettre à jour la grille de tir
-                            bateaux_ia[ligne][colonne] = 2
+
+                            if checkcoule(bateaux_ia, bateaux_ia[ligne][colonne]):
+                                # print("jbdvoibfibfdiù")
+                                afficher_message_pla = 3
+                                debut_affichage_message_pla = time.time()
+                            else:
+                                afficher_message_pla = 1
+                                debut_affichage_message_pla = time.time()
+
+                            bateaux_ia[ligne][colonne] = -2
+                            #Afficher "Touché !"
 
                         else:
                             print("Raté !")
                             grille_tir_pla[ligne][colonne] = 0  # Mettre à jour la grille de tir
                             bateaux_ia[ligne][colonne] = -1
+                            afficher_message_pla = 2
+                            debut_affichage_message_pla = time.time()
 
                         # pygame.display.flip()
 
@@ -75,7 +92,7 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
                             colonne = random.randint(0,9)
                         if tir(ligne, colonne, grille_pla)==True: 
                             print("L'ordinateur vous à touché !")
-                            grille_pla[ligne][colonne] = 2  # Mettre à jour la grille de tir
+                            grille_pla[ligne][colonne] = -2  # Mettre à jour la grille de tir
                             tirs_ia[ligne][colonne] = 1
 
                         else:
@@ -103,13 +120,13 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
                 x = colonne * taille_case
                 y = ligne * taille_case + 50
 
-                if grille_pla[ligne][colonne] == 1:
+                if 1<=grille_pla[ligne][colonne]<=5:
                     pygame.draw.rect(fenetre, COULEUR_BATEAU, (x, y, taille_case, taille_case))
                 elif grille_pla[ligne][colonne] == 0:
                     pygame.draw.rect(fenetre, COULEUR_GRILLE, (x, y, taille_case, taille_case), 1)
                 elif grille_pla[ligne][colonne] == -1:
                     pygame.draw.rect(fenetre, GRIS, (x, y, taille_case, taille_case))
-                elif grille_pla[ligne][colonne] == 2:
+                elif grille_pla[ligne][colonne] == -2:
                     pygame.draw.rect(fenetre, ROUGE, (x, y, taille_case, taille_case))
 
 
@@ -119,7 +136,7 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
                 x = colonne * taille_case + 550
                 y = ligne * taille_case + 50
 
-                if grille_tir_pla[ligne][colonne] == 1:
+                if grille_tir_pla[ligne][colonne]==1:
                     pygame.draw.rect(fenetre, COULEUR_BATEAU, (x, y, taille_case, taille_case))
                     cases_choisies[ligne][colonne] = True
                 elif grille_tir_pla[ligne][colonne] == -1:
@@ -142,6 +159,31 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
         texte_info = police.render(info_texte, True, (0, 0, 0))
         fenetre.blit(texte_info, (560, 20))
 
+        # Touché / coulé joueur 
+        if afficher_message_pla==1:
+            message_texte = "Touché !"
+            texte_message = police_message.render(message_texte, True, (255, 0, 0))
+            texte_rect = texte_message.get_rect(center=(800, hauteur // 2))
+            fenetre.blit(texte_message, texte_rect)
+            # Vérifier si le temps d'affichage du message est écoulé
+            if time.time() - debut_affichage_message_pla > 0.5:
+                afficher_message_pla = 0
+        elif afficher_message_pla==2:
+            message_texte = "Raté !"
+            texte_message = police_message.render(message_texte, True, (255, 0, 0))
+            texte_rect = texte_message.get_rect(center=(800, hauteur // 2))
+            fenetre.blit(texte_message, texte_rect)
+            # Vérifier si le temps d'affichage du message est écoulé
+            if time.time() - debut_affichage_message_pla > 0.5:
+                afficher_message_pla = 0
+        elif afficher_message_pla==3:
+            message_texte = "Coulé !"
+            texte_message = police_message.render(message_texte, True, (255, 0, 0))
+            texte_rect = texte_message.get_rect(center=(800, hauteur // 2))
+            fenetre.blit(texte_message, texte_rect)
+            # Vérifier si le temps d'affichage du message est écoulé
+            if time.time() - debut_affichage_message_pla > 0.5:
+                afficher_message_pla = 0
 
 
         # Mettre à jour l'affichage

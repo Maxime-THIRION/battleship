@@ -14,7 +14,7 @@ def verifier_superposition(grille, colonne, ligne, taille, orientation):
     nb_colonnes = len(grille[0])
     if orientation == "Horizontal":
         for i in range(taille):
-            if colonne + i >= nb_colonnes or grille[ligne][colonne + i] == 1:
+            if colonne + i >= nb_colonnes or 1<= grille[ligne][colonne + i] <= 5:
                 return True
     elif orientation == "Vertical":
         for i in range(taille):
@@ -57,6 +57,7 @@ def placement_bateaux():
     bateau_selectionne = bateaux[bateau_actuel]
     taille_bateau = NAVIRES[bateau_selectionne]
     orientation_bateau = "Horizontal"
+    p=1
 
     # Variables de contrôle du placement
     placement_termine = False
@@ -97,11 +98,14 @@ def placement_bateaux():
                     # Placer le bateau à l'emplacement choisi
                     if ligne < nb_lignes and colonne < nb_colonnes:
                         if orientation_bateau == "Horizontal" and colonne + taille_bateau <= nb_colonnes:
-                            grille = Init_placement_bateaux(colonne, ligne, bateau_selectionne, 1, grille, 'player')
+                            grille = Init_placement_bateaux(colonne, ligne, bateau_selectionne, 1, grille, 'player', p)
                             placement_termine = True
                         elif orientation_bateau == "Vertical" and ligne + taille_bateau <= nb_lignes:
-                            grille = Init_placement_bateaux(colonne, ligne, bateau_selectionne, 2, grille, 'player')
+                            grille = Init_placement_bateaux(colonne, ligne, bateau_selectionne, 2, grille, 'player', p)
                             placement_termine = True
+                    
+                    p=p+1
+                    print (p)
 
             elif event.type == pygame.KEYDOWN:
                 if not placement_termine:
@@ -124,7 +128,7 @@ def placement_bateaux():
         # Dessiner les bateaux déjà placés
         for ligne in range(nb_lignes):
             for colonne in range(nb_colonnes):
-                if grille[ligne][colonne] == 1:
+                if 1 <= grille[ligne][colonne] <= 5:
                     x = colonne * taille_case
                     y = ligne * taille_case + 100
                     pygame.draw.rect(fenetre, COULEUR_BATEAU, (x, y, taille_case, taille_case))
