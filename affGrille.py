@@ -11,9 +11,9 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
     pygame.init()
 
     # Définir les dimensions de la fenêtre
-    largeur = 1250
-    largeur_grille = 600
-    hauteur = 650
+    largeur = 1050
+    largeur_grille = 500
+    hauteur = 550
     fenetre = pygame.display.set_mode((largeur, hauteur))
     pygame.display.set_caption("Affichage de la Grille")
 
@@ -41,49 +41,52 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
             
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 pos = pygame.mouse.get_pos()
-                colonne = (pos[0] - 650) // taille_case
+                colonne = (pos[0] - 550) // taille_case
                 ligne = (pos[1] - 50) // taille_case
 
-                
+                # while grille_tir_pla[ligne][colonne] != -1:
+                #     ligne = random.randint(0,9)
+                #     colonne = random.randint(0,9)
+
                 # print(ligne, colonne)
-                print(bateaux_ia)
+                # print(bateaux_ia)
                 if 0 <= ligne < nb_lignes and 0 <= colonne < nb_colonnes:
-                    print("Vous avez tiré en", ligne, colonne)
-                    if tir(ligne, colonne, bateaux_ia)==True: 
-                        print("Touché !")
-                        grille_tir_pla[ligne][colonne] = 1  # Mettre à jour la grille de tir
-                        bateaux_ia[ligne][colonne] = 2
+                    if grille_tir_pla[ligne][colonne] == -1:
+                        print("Vous avez tiré en", ligne, colonne)
+                        if tir(ligne, colonne, bateaux_ia)==True: 
+                            print("Touché !")
+                            grille_tir_pla[ligne][colonne] = 1  # Mettre à jour la grille de tir
+                            bateaux_ia[ligne][colonne] = 2
 
-                    else:
-                        print("Raté !")
-                        grille_tir_pla[ligne][colonne] = 0  # Mettre à jour la grille de tir
-                        bateaux_ia[ligne][colonne] = -1
+                        else:
+                            print("Raté !")
+                            grille_tir_pla[ligne][colonne] = 0  # Mettre à jour la grille de tir
+                            bateaux_ia[ligne][colonne] = -1
 
-                    # pygame.display.flip()
+                        # pygame.display.flip()
 
 
 
-                    #Tour de l'ordinateur
-
-                    # pygame.event.wait()
-                    # time.sleep(1)
-                    ligne = random.randint(0,9)
-                    colonne = random.randint(0,9)
-                    while tirs_ia[ligne][colonne] != -1:
+                        #Tour de l'ordinateur
                         ligne = random.randint(0,9)
                         colonne = random.randint(0,9)
-                    if tir(ligne, colonne, grille_pla)==True: 
-                        print("L'ordinateur vous à touché !")
-                        grille_pla[ligne][colonne] = 2  # Mettre à jour la grille de tir
-                        tirs_ia[ligne][colonne] = 1
+                        while tirs_ia[ligne][colonne] != -1:
+                            ligne = random.randint(0,9)
+                            colonne = random.randint(0,9)
+                        if tir(ligne, colonne, grille_pla)==True: 
+                            print("L'ordinateur vous à touché !")
+                            grille_pla[ligne][colonne] = 2  # Mettre à jour la grille de tir
+                            tirs_ia[ligne][colonne] = 1
 
+                        else:
+                            print("L'ordinateur vous à raté !")
+                            grille_pla[ligne][colonne] = -1  # Mettre à jour la grille de tir
+                            tirs_ia[ligne][colonne] = 0
+                        # print(ligne, colonne)
                     else:
-                        print("L'ordinateur vous à raté !")
-                        grille_pla[ligne][colonne] = -1  # Mettre à jour la grille de tir
-                        tirs_ia[ligne][colonne] = 0
-                    # print(ligne, colonne)
+                        print("Vous avez déjà tiré en", ligne, colonne, ", choisissez une autre case")
 
-                    
+
                 if finpartie(grille_pla, bateaux_ia)==True:
                     running = False
                     print("Partie finie !")
@@ -113,7 +116,7 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
         # Dessiner la grille de tirs
         for ligne in range(nb_lignes):
             for colonne in range(nb_colonnes):
-                x = colonne * taille_case + 650
+                x = colonne * taille_case + 550
                 y = ligne * taille_case + 50
 
                 if grille_tir_pla[ligne][colonne] == 1:
@@ -127,6 +130,7 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
 
 
         police = pygame.font.Font(None, 24)
+        police_message = pygame.font.Font(None, 36)
 
         # Afficher le texte d'information
         info_texte = "Votre grille de bateau :"
@@ -136,7 +140,7 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
         # Afficher le texte d'information
         info_texte = "Votre grille de tir :"
         texte_info = police.render(info_texte, True, (0, 0, 0))
-        fenetre.blit(texte_info, (660, 20))
+        fenetre.blit(texte_info, (560, 20))
 
 
 
