@@ -61,12 +61,12 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
 
                     # pygame.display.flip()
 
+
+
                     #Tour de l'ordinateur
 
                     # pygame.event.wait()
                     # time.sleep(1)
-
-
                     ligne = random.randint(0,9)
                     colonne = random.randint(0,9)
                     while tirs_ia[ligne][colonne] != -1:
@@ -82,6 +82,8 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
                         grille_pla[ligne][colonne] = -1  # Mettre à jour la grille de tir
                         tirs_ia[ligne][colonne] = 0
                     # print(ligne, colonne)
+
+                    
                 if finpartie(grille_pla, bateaux_ia)==True:
                     running = False
                     print("Partie finie !")

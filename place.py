@@ -8,6 +8,19 @@ NAVIRES = {'Porte-avion':5,'Croiseur':4,'Contre-torpilleur1':3, 'Contre-torpille
 SENS = ['H','V']
 
 
+def verifier_superposition(grille, colonne, ligne, taille, orientation):
+    nb_lignes = len(grille)
+    nb_colonnes = len(grille[0])
+    if orientation == "Horizontal":
+        for i in range(taille):
+            if colonne + i >= nb_colonnes or grille[ligne][colonne + i] == 1:
+                return True
+    elif orientation == "Vertical":
+        for i in range(taille):
+            if ligne + i >= nb_lignes or grille[ligne + i][colonne] == 1:
+                return True
+    return False
+
 
 
 # import pygame
@@ -50,6 +63,9 @@ def placement_bateaux():
     # Boucle principale
     running = True
     while running:
+
+        superposition = False  # Variable pour vérifier la superposition de bateaux
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -59,6 +75,17 @@ def placement_bateaux():
                     x, y = event.pos
                     ligne = (y-150) // taille_case
                     colonne = x // taille_case
+
+                    # while verifier_superposition(grille, colonne, ligne, taille_bateau, orientation_bateau):
+                    #     print ("Veuillez choisir une autre case")
+                    #     x, y = event.pos
+                    #     ligne = (y - 150) // taille_case
+                    #     colonne = x // taille_case
+
+                    if verifier_superposition(grille, colonne, ligne, taille_bateau, orientation_bateau):
+                        superposition = True  # Superposition détectée
+                        print("Veuillez choisir une autre case")
+                        break  # Sortir de la boucle for
                     
                     # Placer le bateau à l'emplacement choisi
                     if ligne < nb_lignes and colonne < nb_colonnes:
