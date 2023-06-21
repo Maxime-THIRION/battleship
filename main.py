@@ -2,6 +2,7 @@ import pygame
 from Homepage import *
 from Rules import *
 from Play import *
+from fin import *
 pygame.init()
 
 # Définir les dimensions de la fenêtre
@@ -27,6 +28,10 @@ def main_loop(largeur, hauteur):
                 current_page = rules
             elif page_result == 'play':
                 current_page = play
+            elif page_result == 'fin':
+                current_page = fin
+
+            
         
 main_loop(largeur, hauteur)
 

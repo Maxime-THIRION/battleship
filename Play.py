@@ -4,6 +4,7 @@ import random
 from test import *
 import place
 import affGrille
+# import round 
 
 def play(largeur, hauteur):
 
@@ -17,12 +18,13 @@ def play(largeur, hauteur):
     score_player = 25
     score_ia = 25
 
-    print (bateaux_ia)
+    # print (bateaux_ia)
 
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                return 'fin'
                 running = False
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                 # Votre code à exécuter lorsque la touche "Entrée" est pressée
@@ -38,17 +40,15 @@ def play(largeur, hauteur):
 
             # print(Placement_bateau_player(bateaux_player))
             bateaux_player = place.placement_bateaux()
-            print (bateaux_player)
+            # print (bateaux_player)
 
-            print(tirs_player)
-            affGrille.affGrille(bateaux_player, tirs_player, score_player, score_ia)
-
-
-
-            
+            # print (bateaux_ia)    
+            affGrille.affGrille(bateaux_player, tirs_player, score_player, score_ia, bateaux_ia, tirs_ia)
 
 
+            # Tour_de_jeu(tirs_player, 'player')
 
     pygame.quit()
+
 
 
