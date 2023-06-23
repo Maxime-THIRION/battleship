@@ -30,24 +30,33 @@ def placement_bateaux():
     pygame.init()
 
     # Définir les dimensions de la fenêtre
-    largeur = 600
-    hauteur = 700
+    largeur = 1100
+    hauteur = 800
     fenetre = pygame.display.set_mode((largeur, hauteur))
     pygame.display.set_caption("Placement des Bateaux")
 
+    # fond
+    background = pygame.image.load("images/sonar.jpeg").convert()
+    background = pygame.transform.scale(background, (largeur, hauteur))
+    screen.blit(background, (0, 0))
+
+    pygame.draw.rect(screen, (0, 0, 0), (110, 70, 480, 520))  # Dessine un rectangle pour le cadre du texte
+
+
     # Couleurs
-    COULEUR_FOND = (255, 255, 255)
-    COULEUR_GRILLE = (0, 0, 0)
-    COULEUR_BATEAU = (0, 0, 255)
-    COULEUR_TEXTE = (0, 0, 0)
+    COULEUR_FOND = background
+    COULEUR_GRILLE = (255, 165, 0)
+    COULEUR_BATEAU = (255, 165, 0)
+    COULEUR_TEXTE = (255, 165, 0)
 
     # Police de caractères
-    police = pygame.font.Font(None, 24)
+    police = pygame.font.Font("bebas_neue/BebasNeue-Regular.ttf", 20)
 
     # Dimensions de la grille
+    #La grille commence en 150, 190
     nb_lignes = 10
     nb_colonnes = 10
-    taille_case = largeur // nb_colonnes
+    taille_case = 400 // nb_colonnes
 
     # Grille de la bataille navale
     grille = [[0] * nb_colonnes for _ in range(nb_lignes)]
@@ -84,8 +93,8 @@ def placement_bateaux():
                 if not placement_termine:
                     # Récupérer les coordonnées de la case cliquée
                     x, y = event.pos
-                    ligne = (y-100) // taille_case
-                    colonne = x // taille_case
+                    ligne = (y-190) // taille_case
+                    colonne = (x-150) // taille_case
 
                     # while verifier_superposition(grille, colonne, ligne, taille_bateau, orientation_bateau):
                     #     print ("Veuillez choisir une autre case")
@@ -130,13 +139,13 @@ def placement_bateaux():
                     
 
         # Effacer l'écran
-        fenetre.fill(COULEUR_FOND)
+        # fenetre.fill(COULEUR_FOND)
 
         # Dessiner la grille
         for ligne in range(nb_lignes):
             for colonne in range(nb_colonnes):
-                x = colonne * taille_case
-                y = ligne * taille_case + 100
+                x = colonne * taille_case + 150
+                y = ligne * taille_case + 190
 
                 pygame.draw.rect(fenetre, COULEUR_GRILLE, (x, y, taille_case, taille_case), 1)
 
@@ -144,47 +153,43 @@ def placement_bateaux():
         for ligne in range(nb_lignes):
             for colonne in range(nb_colonnes):
                 if 1 <= grille[ligne][colonne] <= 5:
-                    x = colonne * taille_case
-                    y = ligne * taille_case + 100
+                    x = colonne * taille_case + 150
+                    y = ligne * taille_case + 190
                     pygame.draw.rect(fenetre, COULEUR_BATEAU, (x, y, taille_case, taille_case))
-
-        # Afficher le bateau à placer
-        # x = largeur - 200
-        # y = hauteur - 100
-        # pygame.draw.rect(fenetre, COULEUR_BATEAU, (x, y, taille_case * taille_bateau, taille_case))
 
         # Afficher le texte d'information
         info_texte = f"Placez le bateau : {bateau_selectionne} ({taille_bateau} cases)"
         texte_info = police.render(info_texte, True, COULEUR_TEXTE)
-        fenetre.blit(texte_info, (20, 20))
+        fenetre.blit(texte_info, (120, 80))
 
         # Afficher le texte d'orientation
         orientation_texte = f"Orientation : {orientation_bateau}"
         texte_orientation = police.render(orientation_texte, True, COULEUR_TEXTE)
-        fenetre.blit(texte_orientation, (20, 50))
+        fenetre.blit(texte_orientation, (120, 105))
 
         # Afficher le texte de confirmation
         if placement_termine:
             texte_confirmation = police.render("Placement terminé ! Appuyez sur Entrée", True, COULEUR_TEXTE)
-            fenetre.blit(texte_confirmation, (20, 80))
+            fenetre.blit(texte_confirmation, (120, 130))
         else :
             texte_confirmation = police.render("v: vertical, h: horizontal, p: super pouvoir ", True, COULEUR_TEXTE)
-            fenetre.blit(texte_confirmation, (20, 80))
+            fenetre.blit(texte_confirmation, (120, 130))
 
         # Afficher le pouvoir 
         if cpt_pouvoir > 0:
             pouvoir_texte = f"Pouvoir : {pouvoir}"
             texte_orientation = police.render(pouvoir_texte, True, COULEUR_TEXTE)
-            fenetre.blit(texte_orientation, (20, 110))
+            fenetre.blit(texte_orientation, (120, 155))
 
         # Afficher le message de superposition
         if afficher_message:
             message_texte = "Placement impossible !"
             texte_message = pygame.font.Font(None, 36).render(message_texte, True, (255, 0, 0))
-            fenetre.blit(texte_message, ((largeur//2)-120, hauteur//2))
+            fenetre.blit(texte_message, (210, 360))
             # Vérifier si le temps d'affichage du message est écoulé
             if time.time() - debut_affichage_message > 1.5:
                 afficher_message = False
+            
 
         # Mettre à jour l'affichage
         pygame.display.flip()

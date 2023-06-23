@@ -19,6 +19,11 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
     fenetre = pygame.display.set_mode((largeur, hauteur))
     pygame.display.set_caption("Affichage de la Grille")
 
+    # fond
+    background = pygame.image.load("images/background_play.jpeg").convert()
+    background = pygame.transform.scale(background, (1050, 550))
+    screen.blit(background, (0, 0))
+
     # Couleurs
     COULEUR_FOND = (255, 255, 255)
     COULEUR_GRILLE = (0, 0, 0)
