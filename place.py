@@ -7,6 +7,7 @@ COLONNES = {'A':0, 'B':1, 'C':2, 'D':3, 'E':4, 'F':5, 'G':6, 'H':7, 'I':8, 'J':9
 
 NAVIRES = {'Porte-avion':5,'Croiseur':4,'Contre-torpilleur1':3, 'Contre-torpilleur2':3, 'Sous-marin':2}
 SENS = ['H','V']
+POUVOIR = ['bombe', 'rafale', 'boule de cristal', 'missile tueur', 'triplette maudite']
 
 
 def verifier_superposition(grille, colonne, ligne, taille, orientation):
@@ -66,6 +67,10 @@ def placement_bateaux():
     afficher_message = False
     debut_affichage_message = 0
 
+    #Compteur pouvoir 
+    pouvoir =''
+    cpt_pouvoir = 0
+
     # Boucle principale
     running = True
     while running:
@@ -113,6 +118,16 @@ def placement_bateaux():
                         orientation_bateau = "Horizontal"
                     elif event.key == pygame.K_v:
                         orientation_bateau = "Vertical"
+                    elif event.key == pygame.K_p:
+                        # if cpt_pouvoir ==0:
+                        #     pouvoir = random.choice(POUVOIR)
+                            # pouvoir = 'rafale'
+                            # cpt_pouvoir = cpt_pouvoir + 1
+                        pouvoir = random.choice(POUVOIR)
+                        cpt_pouvoir = cpt_pouvoir + 1
+
+                        
+                    
 
         # Effacer l'écran
         fenetre.fill(COULEUR_FOND)
@@ -153,8 +168,14 @@ def placement_bateaux():
             texte_confirmation = police.render("Placement terminé ! Appuyez sur Entrée", True, COULEUR_TEXTE)
             fenetre.blit(texte_confirmation, (20, 80))
         else :
-            texte_confirmation = police.render("'v' pour placr verticalement et 'h' pour placer horizontalement ", True, COULEUR_TEXTE)
+            texte_confirmation = police.render("v: vertical, h: horizontal, p: super pouvoir ", True, COULEUR_TEXTE)
             fenetre.blit(texte_confirmation, (20, 80))
+
+        # Afficher le pouvoir 
+        if cpt_pouvoir > 0:
+            pouvoir_texte = f"Pouvoir : {pouvoir}"
+            texte_orientation = police.render(pouvoir_texte, True, COULEUR_TEXTE)
+            fenetre.blit(texte_orientation, (20, 110))
 
         # Afficher le message de superposition
         if afficher_message:
@@ -185,4 +206,4 @@ def placement_bateaux():
     # Quitter Pygame
     pygame.quit()
 
-    return grille
+    return grille, pouvoir

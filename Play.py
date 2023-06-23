@@ -39,12 +39,12 @@ def play(largeur, hauteur):
             pygame.display.flip()
 
             # print(Placement_bateau_player(bateaux_player))
-            bateaux_player = place.placement_bateaux()
-            print (bateaux_player)
+            bateaux_player, pouvoir = place.placement_bateaux()
+            # print (bateaux_player)
 
-            print (bateaux_ia)    
+            # print (bateaux_ia)    
 
-            affGrille.affGrille(bateaux_player, tirs_player, score_player, score_ia, bateaux_ia, tirs_ia)
+            affGrille.affGrille(bateaux_player, tirs_player, score_player, score_ia, bateaux_ia, tirs_ia, pouvoir)
 
 
             # Tour_de_jeu(tirs_player, 'player')
