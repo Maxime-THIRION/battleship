@@ -8,7 +8,7 @@ from checkcoule import *
 
 
 
-def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, tirs_ia):
+def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, tirs_ia, pouvoir):
     pygame.init()
 
     # Définir les dimensions de la fenêtre
@@ -36,6 +36,10 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
     # Variables pour afficher le message
     afficher_message_pla = 0
     debut_affichage_message_pla = 0 
+
+    # Variable pour le décompte
+    decompte = 0
+    debut_decompte = time.time()
 
     # Boucle principale
     running = True
@@ -82,7 +86,11 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
 
                         # pygame.display.flip()
 
-
+                        # decompte = 3
+                        # while decompte > 0:
+                        #     time.sleep(1)
+                        #     decompte = decompte - 1
+                        
 
                         #Tour de l'ordinateur
                         ligne = random.randint(0,9)
@@ -100,6 +108,8 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
                             grille_pla[ligne][colonne] = -1  # Mettre à jour la grille de tir
                             tirs_ia[ligne][colonne] = 0
                         # print(ligne, colonne)
+
+
                     else:
                         print("Vous avez déjà tiré en", ligne, colonne, ", choisissez une autre case")
 
@@ -185,6 +195,18 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
             if time.time() - debut_affichage_message_pla > 0.5:
                 afficher_message_pla = 0
 
+        # décompte attaque ia
+        if decompte>0:
+            texte_message = police_message.render(decompte, True, (255, 0, 0))
+            texte_rect = texte_message.get_rect(center=(240, hauteur // 2))
+            fenetre.blit(texte_message, texte_rect)
+            # Vérifier si le temps d'affichage du message est écoulé
+            if time.time() - debut_affichage_message_pla > 0.5:
+                afficher_message_pla = 0
+        
+
+
+        
 
         # Mettre à jour l'affichage
         pygame.display.flip()
