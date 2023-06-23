@@ -13,7 +13,6 @@ def rules(largeur, hauteur):
     y = 80
     largeur_zone = 400
     hauteur_zone = 420
-    # vitesse_affichage = 0.2  # Vitesse d'affichage du texte
     vitesse_affichage = 0.05  # Vitesse d'affichage du texte
     surface_texte = pygame.Surface((largeur_zone, hauteur_zone))  # Surface pour afficher le texte
 

@@ -29,16 +29,23 @@ def placement_bateaux():
     pygame.init()
 
     # Définir les dimensions de la fenêtre
-    largeur = 600
+    largeur = 1000
     hauteur = 700
     fenetre = pygame.display.set_mode((largeur, hauteur))
     pygame.display.set_caption("Placement des Bateaux")
 
+    # fond
+    background = pygame.image.load("images/sonar.jpeg").convert()
+    background = pygame.transform.scale(background, (largeur, hauteur))
+    screen.blit(background, (0, 0))
+
+    pygame.draw.rect(screen, (0, 0, 0), (110, 70, 420, 440))  # Dessine un rectangle pour le cadre du texte
+
     # Couleurs
-    COULEUR_FOND = (255, 255, 255)
-    COULEUR_GRILLE = (0, 0, 0)
+    COULEUR_FOND = background
+    COULEUR_GRILLE = (255, 165, 0)
     COULEUR_BATEAU = (0, 0, 255)
-    COULEUR_TEXTE = (0, 0, 0)
+    COULEUR_TEXTE = (255, 165, 0)
 
     # Police de caractères
     police = pygame.font.Font(None, 24)
@@ -46,7 +53,7 @@ def placement_bateaux():
     # Dimensions de la grille
     nb_lignes = 10
     nb_colonnes = 10
-    taille_case = largeur // nb_colonnes
+    taille_case = 420 // nb_colonnes
 
     # Grille de la bataille navale
     grille = [[0] * nb_colonnes for _ in range(nb_lignes)]
@@ -110,13 +117,10 @@ def placement_bateaux():
                     elif event.key == pygame.K_v:
                         orientation_bateau = "Vertical"
 
-        # Effacer l'écran
-        fenetre.fill(COULEUR_FOND)
-
         # Dessiner la grille
         for ligne in range(nb_lignes):
             for colonne in range(nb_colonnes):
-                x = colonne * taille_case
+                x = colonne * taille_case + 110
                 y = ligne * taille_case + 100
 
                 pygame.draw.rect(fenetre, COULEUR_GRILLE, (x, y, taille_case, taille_case), 1)
@@ -125,7 +129,7 @@ def placement_bateaux():
         for ligne in range(nb_lignes):
             for colonne in range(nb_colonnes):
                 if grille[ligne][colonne] == 1:
-                    x = colonne * taille_case
+                    x = colonne * taille_case + 110
                     y = ligne * taille_case + 100
                     pygame.draw.rect(fenetre, COULEUR_BATEAU, (x, y, taille_case, taille_case))
 
