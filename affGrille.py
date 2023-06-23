@@ -1,4 +1,5 @@
 import pygame
+from Play import *
 import random
 import time 
 from tir import * 
@@ -15,17 +16,17 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
     # Définir les dimensions de la fenêtre
     largeur = 1050
     largeur_grille = 500
-    hauteur = 550
+    hauteur = 750
     fenetre = pygame.display.set_mode((largeur, hauteur))
     pygame.display.set_caption("Affichage de la Grille")
 
     # fond
     background = pygame.image.load("images/background_play.jpeg").convert()
-    background = pygame.transform.scale(background, (1050, 550))
+    background = pygame.transform.scale(background, (largeur, hauteur))
     screen.blit(background, (0, 0))
 
     # Couleurs
-    COULEUR_FOND = (255, 255, 255)
+    COULEUR_FOND = background
     COULEUR_GRILLE = (0, 0, 0)
     COULEUR_BATEAU = (0, 0, 255)
     ROUGE = (255, 0, 0)
@@ -33,9 +34,9 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
     VERT = (0, 255, 0)
 
     # Dimensions de la grille
-    nb_lignes = len(grille_pla)
-    nb_colonnes = len(grille_pla[0])
-    taille_case = largeur_grille // nb_colonnes
+    nb_lignes = 10
+    nb_colonnes = 10
+    taille_case = 400 // nb_colonnes
 
     # Initialiser les cases choisies
     cases_choisies = [[False] * nb_colonnes for _ in range(nb_lignes)]
@@ -241,7 +242,7 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
 
 
         # Effacer l'écran
-        fenetre.fill(COULEUR_FOND)
+        # fenetre.fill(COULEUR_FOND)
 
         # Dessiner la grille bateau
         for ligne in range(nb_lignes):
