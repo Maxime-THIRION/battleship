@@ -7,7 +7,7 @@ COLONNES = {'A':0, 'B':1, 'C':2, 'D':3, 'E':4, 'F':5, 'G':6, 'H':7, 'I':8, 'J':9
 
 NAVIRES = {'Porte-avion':5,'Croiseur':4,'Contre-torpilleur1':3, 'Contre-torpilleur2':3, 'Sous-marin':2}
 SENS = ['H','V']
-POUVOIR = ['bombe', 'rafale', 'boule de cristal', 'missile tueur', 'triplette maudite']
+POUVOIR = ['bombe', 'tempete', 'clairvoyance', 'missile', 'rafale']
 
 
 def verifier_superposition(grille, colonne, ligne, taille, orientation):
@@ -140,6 +140,8 @@ def placement_bateaux():
 
         # Effacer l'écran
         # fenetre.fill(COULEUR_FOND)
+        pygame.draw.rect(screen, (0, 0, 0), (110, 70, 480, 520))  # Dessine un rectangle pour le cadre du texte
+
 
         # Dessiner la grille
         for ligne in range(nb_lignes):
