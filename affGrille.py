@@ -29,7 +29,8 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
     # COULEUR_FOND = background
     COULEUR_GRILLE = (255, 165, 0)
     COULEUR_TEXTE = (255, 165, 0)
-    COULEUR_BATEAU = (0, 0, 255)
+    ORANGE = (255, 165, 0)
+    BLEU = (0, 0, 255)
     ROUGE = (255, 0, 0)
     GRIS = (128, 128, 128)
     VERT = (0, 255, 0)
@@ -274,7 +275,8 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
                 y = ligne * taille_case_bat + 110
 
                 if 1<=grille_pla[ligne][colonne]<=5:
-                    pygame.draw.rect(fenetre, COULEUR_BATEAU, (x, y, taille_case_bat, taille_case_bat))
+                    # pygame.draw.rect(fenetre, ORANGE, (x, y, taille_case_bat, taille_case_bat))
+                    pygame.draw.rect(fenetre, VERT, (x, y, taille_case_bat, taille_case_bat))
                 elif grille_pla[ligne][colonne] == 0:
                     pygame.draw.rect(fenetre, COULEUR_GRILLE, (x, y, taille_case_bat, taille_case_bat), 1)
                 elif grille_pla[ligne][colonne] == -1:
@@ -292,7 +294,8 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
                 y = ligne * taille_case_tir + 65
 
                 if grille_tir_pla[ligne][colonne]==1:
-                    pygame.draw.rect(fenetre, COULEUR_BATEAU, (x, y, taille_case_tir, taille_case_tir))
+                    # pygame.draw.rect(fenetre, ORANGE, (x, y, taille_case_tir, taille_case_tir))
+                    pygame.draw.rect(fenetre, VERT, (x, y, taille_case_tir, taille_case_tir))
                     cases_choisies[ligne][colonne] = True
                 elif grille_tir_pla[ligne][colonne] == -1:
                     pygame.draw.rect(fenetre, COULEUR_GRILLE, (x, y, taille_case_tir, taille_case_tir), 1)
@@ -300,7 +303,7 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
                     pygame.draw.rect(fenetre, GRIS, (x, y, taille_case_tir, taille_case_tir))
                     cases_choisies[ligne][colonne] = True
                 elif grille_tir_pla[ligne][colonne] == 10:
-                    pygame.draw.rect(fenetre, VERT, (x, y, taille_case_tir, taille_case_tir))
+                    pygame.draw.rect(fenetre, BLEU, (x, y, taille_case_tir, taille_case_tir))
 
 
         police = pygame.font.Font(None, 21)
