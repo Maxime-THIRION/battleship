@@ -7,9 +7,11 @@ from finpartie import *
 
 
 
-def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, tirs_ia):
-    pygame.init()
 
+def affGrille( grille_pla, grille_tir_pla, score_player, dernier_tir_reussi, bateaux_ia, tirs_ia):
+    print(f"dernier tir reussi mtn {dernier_tir_reussi}")
+    pygame.init()
+    
     # Définir les dimensions de la fenêtre
     largeur = 1250
     largeur_grille = 600
@@ -65,23 +67,54 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
 
                     # pygame.event.wait()
                     # time.sleep(1)
+                    print(f"dernier tir reussi dans la boucle{dernier_tir_reussi}")
+                    if dernier_tir_reussi is not None:
+            
+                        new_var = tir_a_cote(dernier_tir_reussi, grille_pla)
+                        
+                        ligne = new_var[0]
+                        colonne = new_var[1]
+                        print(f"dernier tir reussi dans la boucle2.0{dernier_tir_reussi}")
+                        print(f"ligne{new_var[0]}colonne{new_var[1]}")
+                        
+                    else:
+                        ligne = random.randint(0, 9)
+                        colonne = random.randint(0, 9)
 
-
-                    ligne = random.randint(0,9)
-                    colonne = random.randint(0,9)
-                    while tirs_ia[ligne][colonne] != -1:
-                        ligne = random.randint(0,9)
-                        colonne = random.randint(0,9)
-                    if tir(ligne, colonne, grille_pla)==True: 
-                        print("L'ordinateur vous à touché !")
+                    print(f"ligne{ligne}collone{colonne}")
+                    # while tirs_ia[ligne][colonne] != -1:
+                    #     ligne = random.randint(0, 9)
+                    #     colonne = random.randint(0, 9)
+                    # else:
+                    #     ligne = random.randint(0, 9)
+                    #     colonne = random.randint(0, 9)
+                    print(f"lignev2{ligne}collonev2{colonne}")
+                    if tir(ligne, colonne, grille_pla):
+                        print("L'ordinateur vous a touché !")
                         grille_pla[ligne][colonne] = 2  # Mettre à jour la grille de tir
                         tirs_ia[ligne][colonne] = 1
-
+                        dernier_tir_reussi = (ligne, colonne)
                     else:
-                        print("L'ordinateur vous à raté !")
+                        print("L'ordinateur vous a raté !")
                         grille_pla[ligne][colonne] = -1  # Mettre à jour la grille de tir
                         tirs_ia[ligne][colonne] = 0
-                    # print(ligne, colonne)
+                        dernier_tir_reussi = None
+
+                    # ligne = random.randint(0,9)
+                    # colonne = random.randint(0,9)
+                    # while tirs_ia[ligne][colonne] != -1:
+                    #     ligne = random.randint(0,9)
+                    #     colonne = random.randint(0,9)
+                    # if tir(ligne, colonne, grille_pla)==True: 
+                    #     print("L'ordinateur vous à touché !")
+                    #     grille_pla[ligne][colonne] = 2  # Mettre à jour la grille de tir
+                    #     tirs_ia[ligne][colonne] = 1
+
+                    # else:
+                    #     print("L'ordinateur vous à raté !")
+                    #     grille_pla[ligne][colonne] = -1  # Mettre à jour la grille de tir
+                    #     tirs_ia[ligne][colonne] = 0
+                    # # print(ligne, colonne)
                 if finpartie(grille_pla, bateaux_ia)==True:
                     running = False
                     print("Partie finie !")
@@ -148,3 +181,25 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
 
     # Quitter Pygame
     pygame.quit()
+
+
+def tir_a_cote(coord_dernier_tir, grille_pla):
+    ligne, colonne = coord_dernier_tir
+    voisins = [(ligne-1, colonne), (ligne+1, colonne), (ligne, colonne-1), (ligne, colonne+1)]
+    print(f"voisin{voisins}")
+    valide_voisins = []
+    
+    for voisin in voisins:
+        v_ligne, v_colonne = voisin
+        print(f"ligne{v_ligne}olonne{v_colonne}")
+        if 0 <= v_ligne < 10 and 0 <= v_colonne < 10 :
+            valide_voisins.append(voisin)
+            new_cible = random.choice(valide_voisins)
+            print(f"valide voison{valide_voisins}")
+    print(f"nouvelle cible{new_cible}")        
+    if valide_voisins:
+        return new_cible
+    else:
+        # Si aucun voisin valide n'est trouvé, retourner des coordonnées aléatoires
+        return (random.randint(0, 9),random.randint(0, 9))
+

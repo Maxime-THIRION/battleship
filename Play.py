@@ -17,9 +17,10 @@ def play(largeur, hauteur):
     
     score_player = 25
     score_ia = 25
-
+    dernier_tir_reussi = None
+    print(f"dernier_tir_reussi{dernier_tir_reussi}" )
     # print (bateaux_ia)
-
+    
     running = True
     while running:
         for event in pygame.event.get():
@@ -42,8 +43,9 @@ def play(largeur, hauteur):
             bateaux_player = place.placement_bateaux()
             # print (bateaux_player)
 
-            # print (bateaux_ia)    
-            affGrille.affGrille(bateaux_player, tirs_player, score_player, score_ia, bateaux_ia, tirs_ia)
+            # print (bateaux_ia)
+              
+            affGrille.affGrille( bateaux_player, tirs_player, score_player, dernier_tir_reussi, bateaux_ia, tirs_ia)
 
 
             # Tour_de_jeu(tirs_player, 'player')
