@@ -10,7 +10,7 @@ from cristal import *
 
 
 
-def affGrille(grille_pla, grille_tir_pla, score_player, dernier_tir_reussi, bateaux_ia, tirs_ia, pouvoir):
+def affGrille(grille_pla, grille_tir_pla, niveau, dernier_tir_reussi, bateaux_ia, tirs_ia, pouvoir):
     pygame.init()
 
     # Définir les dimensions de la fenêtre
@@ -63,6 +63,9 @@ def affGrille(grille_pla, grille_tir_pla, score_player, dernier_tir_reussi, bate
     pouvoir_actif = False
     orientation_pouvoir = 'Horizontal'
     clairvoiance = False
+
+    # Niveau
+    niveau_cpt = 1
 
     # Boucle principale
     running = True
@@ -210,16 +213,36 @@ def affGrille(grille_pla, grille_tir_pla, score_player, dernier_tir_reussi, bate
                         
 
                         #Tour de l'ordinateur
-                        print(f"dt{dernier_tir_reussi}")
-                        if dernier_tir_reussi is not None:
-            
-                            new_var = tir_a_cote(dernier_tir_reussi, grille_pla)
-                            ligne = new_var[0]
-                            colonne = new_var[1]
-                            print(f"ligne{new_var[0]}colonne{new_var[1]}")
-                        else :
+                        if niveau == 1:
                             ligne = random.randint(0,9)
                             colonne = random.randint(0,9)
+                        elif niveau == 2:
+                            print(f"dt{dernier_tir_reussi}")
+                            if dernier_tir_reussi is not None:
+                
+                                new_var = tir_a_cote(dernier_tir_reussi, grille_pla)
+                                ligne = new_var[0]
+                                colonne = new_var[1]
+                                print(f"ligne{new_var[0]}colonne{new_var[1]}")
+                            else :
+                                ligne = random.randint(0,9)
+                                colonne = random.randint(0,9)
+                        elif niveau == 3:
+                            if niveau_cpt==3:
+                                ligne, colonne = cristal(grille_pla)
+                                niveau_cpt=1
+                            else:
+                                print(f"dt{dernier_tir_reussi}")
+                                if dernier_tir_reussi is not None:
+                    
+                                    new_var = tir_a_cote(dernier_tir_reussi, grille_pla)
+                                    ligne = new_var[0]
+                                    colonne = new_var[1]
+                                    print(f"ligne{new_var[0]}colonne{new_var[1]}")
+                                else :
+                                    ligne = random.randint(0,9)
+                                    colonne = random.randint(0,9)
+                                niveau_cpt = niveau_cpt + 1
                         while tirs_ia[ligne][colonne] != -1:
                             ligne = random.randint(0,9)
                             colonne = random.randint(0,9)
@@ -239,7 +262,10 @@ def affGrille(grille_pla, grille_tir_pla, score_player, dernier_tir_reussi, bate
                             afficher_message_ia = 2
                             debut_affichage_message_pla = time.time()
                             dernier_tir_reussi = None
-                        # print(ligne, colonne)
+
+
+
+                        
 
 
                     else:

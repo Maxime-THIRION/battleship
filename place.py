@@ -80,6 +80,9 @@ def placement_bateaux():
     pouvoir =''
     cpt_pouvoir = 0
 
+    #Niveau de difficulté
+    niveau = 1
+
     # Boucle principale
     running = True
     while running:
@@ -134,6 +137,12 @@ def placement_bateaux():
                             # cpt_pouvoir = cpt_pouvoir + 1
                         pouvoir = random.choice(POUVOIR)
                         cpt_pouvoir = cpt_pouvoir + 1
+                    elif event.key == pygame.K_1:
+                        niveau = 1
+                    elif event.key == pygame.K_2:
+                        niveau = 2
+                    elif event.key == pygame.K_3:
+                        niveau = 3
 
                         
                     
@@ -164,24 +173,34 @@ def placement_bateaux():
         texte_info = police.render(info_texte, True, COULEUR_TEXTE)
         fenetre.blit(texte_info, (120, 80))
 
-        # Afficher le texte d'orientation
-        orientation_texte = f"Orientation : {orientation_bateau}"
-        texte_orientation = police.render(orientation_texte, True, COULEUR_TEXTE)
-        fenetre.blit(texte_orientation, (120, 105))
+        # Afficher le niveau
+        if niveau > 0:
+            niveau_texte = f"Niveau IA: {niveau}   (Appuyez sur 1, 2 ou 3 pour changer le niveau)"
+            texte_orientation = police.render(niveau_texte, True, COULEUR_TEXTE)
+            fenetre.blit(texte_orientation, (120, 105))
+
+        #80, 105, 130, 155
+
+
 
         # Afficher le texte de confirmation
-        if placement_termine:
-            texte_confirmation = police.render("Placement terminé ! Appuyez sur Entrée", True, COULEUR_TEXTE)
-            fenetre.blit(texte_confirmation, (120, 130))
-        else :
+        if pouvoir == '':
             texte_confirmation = police.render("v: vertical, h: horizontal, p: super pouvoir ", True, COULEUR_TEXTE)
             fenetre.blit(texte_confirmation, (120, 130))
+        else :
+            texte_confirmation = police.render(f"v: vertical, h: horizontal, pouvoir: {pouvoir} ", True, COULEUR_TEXTE)
+            fenetre.blit(texte_confirmation, (120, 130))
 
-        # Afficher le pouvoir 
-        if cpt_pouvoir > 0:
-            pouvoir_texte = f"Pouvoir : {pouvoir}"
-            texte_orientation = police.render(pouvoir_texte, True, COULEUR_TEXTE)
+        # Afficher le texte d'orientation
+        if placement_termine:
+            texte_confirmation = police.render("Placement terminé ! Appuyez sur Entrée", True, COULEUR_TEXTE)
+            fenetre.blit(texte_confirmation, (120, 155))
+        else :
+            orientation_texte = f"Orientation : {orientation_bateau}"
+            texte_orientation = police.render(orientation_texte, True, COULEUR_TEXTE)
             fenetre.blit(texte_orientation, (120, 155))
+
+
 
         # Afficher le message de superposition
         if afficher_message:
@@ -213,4 +232,4 @@ def placement_bateaux():
     # Quitter Pygame
     pygame.quit()
 
-    return grille, pouvoir
+    return grille, pouvoir, niveau
