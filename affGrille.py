@@ -10,7 +10,7 @@ from cristal import *
 
 
 
-def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, tirs_ia, pouvoir):
+def affGrille(grille_pla, grille_tir_pla, score_player, dernier_tir_reussi, bateaux_ia, tirs_ia, pouvoir):
     pygame.init()
 
     # Définir les dimensions de la fenêtre
@@ -209,17 +209,27 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
                         
 
                         #Tour de l'ordinateur
-                        ligne = random.randint(0,9)
-                        colonne = random.randint(0,9)
+                        print(f"dt{dernier_tir_reussi}")
+                        if dernier_tir_reussi is not None:
+            
+                            new_var = tir_a_cote(dernier_tir_reussi, grille_pla)
+                            ligne = new_var[0]
+                            colonne = new_var[1]
+                            print(f"ligne{new_var[0]}colonne{new_var[1]}")
+                        else :
+                            ligne = random.randint(0,9)
+                            colonne = random.randint(0,9)
                         while tirs_ia[ligne][colonne] != -1:
                             ligne = random.randint(0,9)
                             colonne = random.randint(0,9)
+                        print(f"ligne{ligne}colonne{colonne}")
                         if tir(ligne, colonne, grille_pla)==True: 
                             print("L'ordinateur vous à touché !")
                             grille_pla[ligne][colonne] = -2  # Mettre à jour la grille de tir
                             tirs_ia[ligne][colonne] = 1
                             afficher_message_ia = 1
                             debut_affichage_message_pla = time.time()
+                            dernier_tir_reussi = (ligne, colonne)
 
                         else:
                             print("L'ordinateur vous à raté !")
@@ -227,6 +237,7 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
                             tirs_ia[ligne][colonne] = 0
                             afficher_message_ia = 2
                             debut_affichage_message_pla = time.time()
+                            dernier_tir_reussi = None
                         # print(ligne, colonne)
 
 
@@ -462,3 +473,20 @@ def affGrille(grille_pla, grille_tir_pla, score_player, score_ia, bateaux_ia, ti
 
     # Quitter Pygame
     pygame.quit()
+
+def tir_a_cote(coord_dernier_tir, grille_pla):
+    ligne, colonne = coord_dernier_tir
+    voisins = [(ligne-1, colonne), (ligne+1, colonne), (ligne, colonne-1), (ligne, colonne+1)]
+    valide_voisins = []
+    
+    for voisin in voisins:
+        v_ligne, v_colonne = voisin
+        if 0 <= v_ligne < 10 and 0 <= v_colonne < 10 :
+            valide_voisins.append(voisin)
+            new_cible = random.choice(valide_voisins)       
+    if valide_voisins:
+        return new_cible
+    else:
+        # Si aucun voisin valide n'est trouvé, retourner des coordonnées aléatoires
+        return (random.randint(0, 9),random.randint(0, 9))
+

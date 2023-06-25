@@ -17,7 +17,7 @@ def play(largeur, hauteur):
     
     score_player = 25
     score_ia = 25
-
+    dernier_tir_reussi = None
     # print (bateaux_ia)
 
     running = True
@@ -44,7 +44,7 @@ def play(largeur, hauteur):
 
             # print (bateaux_ia)    
 
-            affGrille.affGrille(bateaux_player, tirs_player, score_player, score_ia, bateaux_ia, tirs_ia, pouvoir)
+            affGrille.affGrille(bateaux_player, tirs_player, score_player, dernier_tir_reussi, bateaux_ia, tirs_ia, pouvoir)
 
 
             # Tour_de_jeu(tirs_player, 'player')
