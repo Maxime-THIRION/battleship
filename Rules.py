@@ -29,7 +29,7 @@ def rules(largeur, hauteur):
 
         background = pygame.image.load("images/sonar.jpeg").convert()
         background = pygame.transform.scale(background, (largeur, hauteur))
-        screen.blit(background, (0, 0))  # Affiche l'arrière-plan
+        #screen.blit(background, (0, 0))  # Affiche l'arrière-plan
 
         pygame.draw.rect(screen, (0, 0, 0), (110, 70, 420, 440))  # Dessine un rectangle pour le cadre du texte
 
@@ -52,6 +52,10 @@ def rules(largeur, hauteur):
         screen.blit(surface_texte, (x, y))  # Affiche la surface_texte à l'écran
 
         pygame.display.flip()  # Mettre à jour l'affichage
+
+        screen.fill((0,0,0))
+        screen.blit(background, (0, 0))  # Affiche l'arrière-plan
+
 
     pygame.quit()  # Quitter Pygame à la fin de la boucle while
 

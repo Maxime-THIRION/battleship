@@ -28,10 +28,6 @@ def main_loop(largeur, hauteur):
                 current_page = rules
             elif page_result == 'play':
                 current_page = play
-            elif page_result == 'fin':
-                current_page = fin
-
-            
         
 main_loop(largeur, hauteur)
 

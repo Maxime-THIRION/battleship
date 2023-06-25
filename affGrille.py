@@ -63,10 +63,14 @@ def affGrille(grille_pla, grille_tir_pla, score_player, dernier_tir_reussi, bate
     orientation_pouvoir = 'Horizontal'
     clairvoiance = False
 
+    #Fin de partie 
+    fin_partie = 0
+    result = ''
+
     # Boucle principale
     running = True
     while running:
-        
+  
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -244,9 +248,12 @@ def affGrille(grille_pla, grille_tir_pla, score_player, dernier_tir_reussi, bate
                     else:
                         print("Vous avez déjà tiré en", ligne, colonne, ", choisissez une autre case")
 
+                x ='Victoire'
+                if x =='Victoire' or finpartie(grille_pla, bateaux_ia)=='Défaite':
+                    #running = False
+                    result = finpartie(grille_pla, bateaux_ia)
+                    fin_partie = 1
 
-                if finpartie(grille_pla, bateaux_ia)==True:
-                    running = False
                     print("Partie finie !")
                 else: 
                     print("pas fini")
@@ -266,11 +273,15 @@ def affGrille(grille_pla, grille_tir_pla, score_player, dernier_tir_reussi, bate
                     orientation_pouvoir = 'Vertical'
                 if event.key == pygame.K_h and pouvoir == 'triplette maudite' and pouvoir_actif == True:
                     orientation_pouvoir = 'Horizontal'
-                
-                        
+                if event.key == pygame.K_RETURN and fin_partie == 1:
+                # Votre code à exécuter lorsque la touche "Entrée" est pressée
+                    return 'rules'
 
 
-
+        police = pygame.font.Font(None, 21)
+        police_pouv = pygame.font.Font(None, 20)
+        police_message = pygame.font.Font(None, 50)
+        police_fin = pygame.font.Font(None, 70)
 
 
         # Effacer l'écran
@@ -278,184 +289,197 @@ def affGrille(grille_pla, grille_tir_pla, score_player, dernier_tir_reussi, bate
         fenetre.fill((0, 0, 0))
         fenetre.blit(background, (0, 0))
 
-        # Dessiner la grille bateau
-        for ligne in range(nb_lignes_bat):
-            for colonne in range(nb_colonnes_bat):
-                x = colonne * taille_case_bat + 692
-                y = ligne * taille_case_bat + 110
 
-                if 1<=grille_pla[ligne][colonne]<=5:
-                    pygame.draw.rect(fenetre, COULEUR_BATEAU, (x, y, taille_case_bat, taille_case_bat))
-                elif grille_pla[ligne][colonne] == 0:
-                    pygame.draw.rect(fenetre, COULEUR_GRILLE, (x, y, taille_case_bat, taille_case_bat), 1)
-                elif grille_pla[ligne][colonne] == -1:
-                    pygame.draw.rect(fenetre, GRIS, (x, y, taille_case_bat, taille_case_bat))
-                elif grille_pla[ligne][colonne] == -2:
-                    pygame.draw.rect(fenetre, ROUGE, (x, y, taille_case_bat, taille_case_bat))
+        if fin_partie==0:
 
-                
+            # Dessiner la grille bateau
+            for ligne in range(nb_lignes_bat):
+                for colonne in range(nb_colonnes_bat):
+                    x = colonne * taille_case_bat + 692
+                    y = ligne * taille_case_bat + 110
 
+                    if 1<=grille_pla[ligne][colonne]<=5:
+                        pygame.draw.rect(fenetre, COULEUR_BATEAU, (x, y, taille_case_bat, taille_case_bat))
+                    elif grille_pla[ligne][colonne] == 0:
+                        pygame.draw.rect(fenetre, COULEUR_GRILLE, (x, y, taille_case_bat, taille_case_bat), 1)
+                    elif grille_pla[ligne][colonne] == -1:
+                        pygame.draw.rect(fenetre, GRIS, (x, y, taille_case_bat, taille_case_bat))
+                    elif grille_pla[ligne][colonne] == -2:
+                        pygame.draw.rect(fenetre, ROUGE, (x, y, taille_case_bat, taille_case_bat))
 
-        # Dessiner la grille de tirs
-        for ligne in range(nb_lignes_tir):
-            for colonne in range(nb_colonnes_tir):
-                x = colonne * taille_case_tir + 265
-                y = ligne * taille_case_tir + 65
-
-                if grille_tir_pla[ligne][colonne]==1:
-                    pygame.draw.rect(fenetre, COULEUR_BATEAU, (x, y, taille_case_tir, taille_case_tir))
-                    cases_choisies[ligne][colonne] = True
-                elif grille_tir_pla[ligne][colonne] == -1:
-                    pygame.draw.rect(fenetre, COULEUR_GRILLE, (x, y, taille_case_tir, taille_case_tir), 1)
-                elif grille_tir_pla[ligne][colonne] == 0:
-                    pygame.draw.rect(fenetre, GRIS, (x, y, taille_case_tir, taille_case_tir))
-                    cases_choisies[ligne][colonne] = True
-                elif grille_tir_pla[ligne][colonne] == 10:
-                    pygame.draw.rect(fenetre, VERT, (x, y, taille_case_tir, taille_case_tir))
+                    
 
 
-        police = pygame.font.Font(None, 21)
-        police_pouv = pygame.font.Font(None, 20)
-        police_message = pygame.font.Font(None, 50)
+            # Dessiner la grille de tirs
+            for ligne in range(nb_lignes_tir):
+                for colonne in range(nb_colonnes_tir):
+                    x = colonne * taille_case_tir + 265
+                    y = ligne * taille_case_tir + 65
 
-        # Afficher le texte d'information
-        info_texte = "Vous tirez à gauche"
-        texte_info = police.render(info_texte, True, (255, 165, 0))
-        fenetre.blit(texte_info, (10, 70))
-
-        # Afficher le texte d'information
-        info_texte = "Votre grille est à droite"
-        texte_info = police.render(info_texte, True, (255, 165, 0))
-        fenetre.blit(texte_info, (10, 90))
-
-        # Afficher le texte d'information
-        info_texte = "L'IA tirera après vous"
-        texte_info = police.render(info_texte, True, (255, 165, 0))
-        fenetre.blit(texte_info, (10, 110))
-
-        # Touché / coulé joueur 
-        if afficher_message_pla==1:
-            message_texte = "TOUCHÉ"
-            texte_message = police_message.render(message_texte, True, (255, 165, 0))
-            texte_rect = texte_message.get_rect(center=(538, 573))
-            fenetre.blit(texte_message, texte_rect)
-            # fenetre.blit(texte_message, (500, 570))
-
-            # Vérifier si le temps d'affichage du message est écoulé
-            if time.time() - debut_affichage_message_pla > 1:
-                afficher_message_pla = 0
-        elif afficher_message_pla==2:
-            message_texte = "RATÉ"
-            texte_message = police_message.render(message_texte, True, (255, 165, 0))
-            texte_rect = texte_message.get_rect(center=(538, 573))
-            fenetre.blit(texte_message, texte_rect)
-            # fenetre.blit(texte_message, (500, 570))
-
-            # Vérifier si le temps d'affichage du message est écoulé
-            if time.time() - debut_affichage_message_pla > 1:
-                afficher_message_pla = 0
-        elif afficher_message_pla==3:
-            message_texte = "COULÉ"
-            texte_message = police_message.render(message_texte, True, (255, 165, 0))
-            texte_rect = texte_message.get_rect(center=(538, 573))
-            fenetre.blit(texte_message, texte_rect)
-            # fenetre.blit(texte_message, (320, 430))
-
-            # Vérifier si le temps d'affichage du message est écoulé
-            if time.time() - debut_affichage_message_pla > 1:
-                afficher_message_pla = 0
-
-        # Touché / coulé IA 
-        if afficher_message_ia==1:
-            message_texte = "L'IA vous a touché"
-            texte_message = police_pouv.render(message_texte, True, (255, 165, 0))
-            fenetre.blit(texte_message, (710, 438))
-            # Vérifier si le temps d'affichage du message est écoulé
-            if time.time() - debut_affichage_message_pla > 1:
-                afficher_message_ia = 0
-        elif afficher_message_ia==2:
-            message_texte = "L'IA vous a raté"
-            texte_message = police_pouv.render(message_texte, True, (255, 165, 0))
-            fenetre.blit(texte_message, (710, 438))
-            # Vérifier si le temps d'affichage du message est écoulé
-            if time.time() - debut_affichage_message_pla > 1:
-                afficher_message_ia = 0            
+                    if grille_tir_pla[ligne][colonne]==1:
+                        pygame.draw.rect(fenetre, COULEUR_BATEAU, (x, y, taille_case_tir, taille_case_tir))
+                        cases_choisies[ligne][colonne] = True
+                    elif grille_tir_pla[ligne][colonne] == -1:
+                        pygame.draw.rect(fenetre, COULEUR_GRILLE, (x, y, taille_case_tir, taille_case_tir), 1)
+                    elif grille_tir_pla[ligne][colonne] == 0:
+                        pygame.draw.rect(fenetre, GRIS, (x, y, taille_case_tir, taille_case_tir))
+                        cases_choisies[ligne][colonne] = True
+                    elif grille_tir_pla[ligne][colonne] == 10:
+                        pygame.draw.rect(fenetre, VERT, (x, y, taille_case_tir, taille_case_tir))
 
 
 
-        # Activation pouvoir 
-        if pouvoir_actif == True:
-            info_texte = f"Pouvoir actif : {pouvoir}"
-            texte_info = police_pouv.render(info_texte, True, (255, 165, 0))
-            fenetre.blit(texte_info, (263, 430))
-
-        # Activer pouvoir  
-        info_texte = "Activer pouvoir : 'p'"
-        texte_info = police.render(info_texte, True, (255, 165, 0))
-        fenetre.blit(texte_info, (10, 130)) 
-
-        # Rafale 
-        if pouvoir == 'rafale':
-            info_texte = f"Rafale: Tirez sur trois"
+            # Afficher le texte d'information
+            info_texte = "Vous tirez à gauche"
             texte_info = police.render(info_texte, True, (255, 165, 0))
-            fenetre.blit(texte_info, (10, 170)) 
-            info_texte = f"cases voisines"
-            texte_info = police.render(info_texte, True, (255, 165, 0))
-            fenetre.blit(texte_info, (10, 190)) 
-            info_texte = f"Orientation : {orientation_pouvoir}"
-            texte_info = police.render(info_texte, True, (255, 165, 0))
-            fenetre.blit(texte_info, (9, 210)) 
+            fenetre.blit(texte_info, (10, 70))
 
-        # Bombe 
-        if pouvoir == 'bombe':
-            info_texte = "Bombe: Tirez sur les"
+            # Afficher le texte d'information
+            info_texte = "Votre grille est à droite"
             texte_info = police.render(info_texte, True, (255, 165, 0))
-            fenetre.blit(texte_info, (10, 170)) 
-            info_texte = "quatres cases voisines"
-            texte_info = police.render(info_texte, True, (255, 165, 0))
-            fenetre.blit(texte_info, (10, 190)) 
-            info_texte = "de votre cible"
-            texte_info = police.render(info_texte, True, (255, 165, 0))
-            fenetre.blit(texte_info, (10, 210)) 
+            fenetre.blit(texte_info, (10, 90))
 
-        # Tempete 
-        if pouvoir == 'tempete':
-            info_texte = "Tempete: Tirez sur"
+            # Afficher le texte d'information
+            info_texte = "L'IA tirera après vous"
             texte_info = police.render(info_texte, True, (255, 165, 0))
-            fenetre.blit(texte_info, (10, 170))    
-            info_texte = "deux autres cases"
-            texte_info = police.render(info_texte, True, (255, 165, 0))
-            fenetre.blit(texte_info, (10, 190)) 
-            info_texte = "aléatoirement"
-            texte_info = police.render(info_texte, True, (255, 165, 0))
-            fenetre.blit(texte_info, (10, 210)) 
+            fenetre.blit(texte_info, (10, 110))
 
-        # Missile 
-        if pouvoir == 'missile':
-            info_texte = "Missile: Coulez un"
-            texte_info = police.render(info_texte, True, (255, 165, 0))
-            fenetre.blit(texte_info, (10, 170))        
-            info_texte = "bateau en un tir"  
-            texte_info = police.render(info_texte, True, (255, 165, 0))
-            fenetre.blit(texte_info, (10, 190)) 
+            # Touché / coulé joueur 
+            if afficher_message_pla==1:
+                message_texte = "TOUCHÉ"
+                texte_message = police_message.render(message_texte, True, (255, 165, 0))
+                texte_rect = texte_message.get_rect(center=(538, 573))
+                fenetre.blit(texte_message, texte_rect)
+                # fenetre.blit(texte_message, (500, 570))
 
-        # Clairvoyance 
-        if pouvoir == 'clairvoyance':
-            info_texte = "Clairvoyance: découvrez"
-            texte_info = police.render(info_texte, True, (255, 165, 0))
-            fenetre.blit(texte_info, (10, 170)) 
-            info_texte = "case aléatoirement"
-            texte_info = police.render(info_texte, True, (255, 165, 0))
-            fenetre.blit(texte_info, (10, 190)) 
+                # Vérifier si le temps d'affichage du message est écoulé
+                if time.time() - debut_affichage_message_pla > 1:
+                    afficher_message_pla = 0
+            elif afficher_message_pla==2:
+                message_texte = "RATÉ"
+                texte_message = police_message.render(message_texte, True, (255, 165, 0))
+                texte_rect = texte_message.get_rect(center=(538, 573))
+                fenetre.blit(texte_message, texte_rect)
+                # fenetre.blit(texte_message, (500, 570))
 
-        # décompte attaque ia
-        # if decompte>0:
-        #     texte_message = police_message.render(decompte, True, (255, 0, 0))
-        #     texte_rect = texte_message.get_rect(center=(240, hauteur // 2))
-        #     fenetre.blit(texte_message, texte_rect)
-        #     # Vérifier si le temps d'affichage du message est écoulé
-        #     if time.time() - debut_affichage_message_pla > 0.5:
-        #         afficher_message_pla = 0
+                # Vérifier si le temps d'affichage du message est écoulé
+                if time.time() - debut_affichage_message_pla > 1:
+                    afficher_message_pla = 0
+            elif afficher_message_pla==3:
+                message_texte = "COULÉ"
+                texte_message = police_message.render(message_texte, True, (255, 165, 0))
+                texte_rect = texte_message.get_rect(center=(538, 573))
+                fenetre.blit(texte_message, texte_rect)
+                # fenetre.blit(texte_message, (320, 430))
+
+                # Vérifier si le temps d'affichage du message est écoulé
+                if time.time() - debut_affichage_message_pla > 1:
+                    afficher_message_pla = 0
+
+            # Touché / coulé IA 
+            if afficher_message_ia==1:
+                message_texte = "L'IA vous a touché"
+                texte_message = police_pouv.render(message_texte, True, (255, 165, 0))
+                fenetre.blit(texte_message, (710, 438))
+                # Vérifier si le temps d'affichage du message est écoulé
+                if time.time() - debut_affichage_message_pla > 1:
+                    afficher_message_ia = 0
+            elif afficher_message_ia==2:
+                message_texte = "L'IA vous a raté"
+                texte_message = police_pouv.render(message_texte, True, (255, 165, 0))
+                fenetre.blit(texte_message, (710, 438))
+                # Vérifier si le temps d'affichage du message est écoulé
+                if time.time() - debut_affichage_message_pla > 1:
+                    afficher_message_ia = 0            
+
+
+
+            # Activation pouvoir 
+            if pouvoir_actif == True:
+                info_texte = f"Pouvoir actif : {pouvoir}"
+                texte_info = police_pouv.render(info_texte, True, (255, 165, 0))
+                fenetre.blit(texte_info, (263, 430))
+
+            # Activer pouvoir  
+            info_texte = "Activer pouvoir : 'p'"
+            texte_info = police.render(info_texte, True, (255, 165, 0))
+            fenetre.blit(texte_info, (10, 130)) 
+
+            # Rafale 
+            if pouvoir == 'rafale':
+                info_texte = f"Rafale: Tirez sur trois"
+                texte_info = police.render(info_texte, True, (255, 165, 0))
+                fenetre.blit(texte_info, (10, 170)) 
+                info_texte = f"cases voisines"
+                texte_info = police.render(info_texte, True, (255, 165, 0))
+                fenetre.blit(texte_info, (10, 190)) 
+                info_texte = f"Orientation : {orientation_pouvoir}"
+                texte_info = police.render(info_texte, True, (255, 165, 0))
+                fenetre.blit(texte_info, (9, 210)) 
+
+            # Bombe 
+            if pouvoir == 'bombe':
+                info_texte = "Bombe: Tirez sur les"
+                texte_info = police.render(info_texte, True, (255, 165, 0))
+                fenetre.blit(texte_info, (10, 170)) 
+                info_texte = "quatres cases voisines"
+                texte_info = police.render(info_texte, True, (255, 165, 0))
+                fenetre.blit(texte_info, (10, 190)) 
+                info_texte = "de votre cible"
+                texte_info = police.render(info_texte, True, (255, 165, 0))
+                fenetre.blit(texte_info, (10, 210)) 
+
+            # Tempete 
+            if pouvoir == 'tempete':
+                info_texte = "Tempete: Tirez sur"
+                texte_info = police.render(info_texte, True, (255, 165, 0))
+                fenetre.blit(texte_info, (10, 170))    
+                info_texte = "deux autres cases"
+                texte_info = police.render(info_texte, True, (255, 165, 0))
+                fenetre.blit(texte_info, (10, 190)) 
+                info_texte = "aléatoirement"
+                texte_info = police.render(info_texte, True, (255, 165, 0))
+                fenetre.blit(texte_info, (10, 210)) 
+
+            # Missile 
+            if pouvoir == 'missile':
+                info_texte = "Missile: Coulez un"
+                texte_info = police.render(info_texte, True, (255, 165, 0))
+                fenetre.blit(texte_info, (10, 170))        
+                info_texte = "bateau en un tir"  
+                texte_info = police.render(info_texte, True, (255, 165, 0))
+                fenetre.blit(texte_info, (10, 190)) 
+
+            # Clairvoyance 
+            if pouvoir == 'clairvoyance':
+                info_texte = "Clairvoyance: découvrez"
+                texte_info = police.render(info_texte, True, (255, 165, 0))
+                fenetre.blit(texte_info, (10, 170)) 
+                info_texte = "case aléatoirement"
+                texte_info = police.render(info_texte, True, (255, 165, 0))
+                fenetre.blit(texte_info, (10, 190)) 
+
+        elif fin_partie == 1:
+            info_texte = f"{result}"
+            texte_result = police_fin.render(info_texte, True, (255, 165, 0))
+            texte_res_rect = texte_result.get_rect(center=(420, 220))
+            fenetre.blit(texte_result, texte_res_rect)
+
+            info_texte = "Pour relancer une partie : Enter"  
+            texte_info = police.render(info_texte, True, (255, 165, 0))
+            fenetre.blit(texte_info, (250, 300)) 
+
+            info_texte2 = "Pour quitter : Echap "  
+            texte_info2 = police.render(info_texte2, True, (255, 165, 0))
+            fenetre.blit(texte_info2, (250, 330)) 
+
+            
+
+
+            
+
+
+
 
     
         
@@ -473,6 +497,9 @@ def affGrille(grille_pla, grille_tir_pla, score_player, dernier_tir_reussi, bate
 
     # Quitter Pygame
     pygame.quit()
+        
+
+
 
 def tir_a_cote(coord_dernier_tir, grille_pla):
     ligne, colonne = coord_dernier_tir

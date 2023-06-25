@@ -21,6 +21,7 @@ def play(largeur, hauteur):
     # print (bateaux_ia)
 
     running = True
+    next = 0
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -29,7 +30,9 @@ def play(largeur, hauteur):
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                 # Votre code à exécuter lorsque la touche "Entrée" est pressée
                 print("ok !")
-                
+            elif next == 1:
+                return 'rules'  # Retourne 'play' lorsque la touche "Entrée" est
+
             
             # Afficher les autres lignes de texte en utilisant la fonction afficher_texte()
             background = pygame.image.load("images/background2.jpeg").convert()
@@ -46,6 +49,9 @@ def play(largeur, hauteur):
 
             affGrille.affGrille(bateaux_player, tirs_player, score_player, dernier_tir_reussi, bateaux_ia, tirs_ia, pouvoir)
 
+            if affGrille.affGrille(bateaux_player, tirs_player, score_player, dernier_tir_reussi, bateaux_ia, tirs_ia, pouvoir) == 'rules':
+                print("test ok")
+                next = 1
 
             # Tour_de_jeu(tirs_player, 'player')
 

@@ -18,8 +18,8 @@ def finpartie(bateau_pla, bateau_ia):
             if case == 1 or case == 2 or case == 3 or case == 4 or case == 5:
                 y=y+1
 
-    if x==0 or y==0:
-        return True
-    else:
-        return False
+    if y==0:
+        return 'Victoire'
+    elif x==0:
+        return 'Défaite'
 
