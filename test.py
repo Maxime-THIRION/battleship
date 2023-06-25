@@ -88,13 +88,13 @@ def Affichage_grille_bateau2(bateaux):
 			numligne+=1
             
             
-def Init_placement_bateaux(c, l, bateau, sens, grille, joueur):
+def Init_placement_bateaux(c, l, bateau, sens, grille, joueur, val):
     taille=NAVIRES[bateau]
     if sens == 1:
         if c+(taille-1)<10 and c<=(10-taille):
             c1=c
             for i in range (taille):
-                grille[l][c1]=1
+                grille[l][c1]=val
                 Sauvegarde_placement(c1, l, bateau, joueur)
                 c1+=1
             return grille
@@ -102,7 +102,7 @@ def Init_placement_bateaux(c, l, bateau, sens, grille, joueur):
         if l+(taille-1)<10 and l<=(10-taille):
             l1 = l
             for i in range(taille):
-                grille[l1][c]=1
+                grille[l1][c]=val
                 Sauvegarde_placement(c, l1, bateau, joueur)
                 l1+=1
             return grille
@@ -160,17 +160,18 @@ def Placement_bateau_player(bateaux):
 
 
 def Placement_bateaux_aleatoire(grille):
-
-	for bateau in NAVIRES:
-		taille = NAVIRES[bateau]
-		possible = 0
-		while possible != 1:
-			x = random.randint(0,9)
-			y = random.randint(0,9)
-			sens = random.randint(1,2)
-			possible = Placement_possible(x, y, taille, sens, grille)
-		Init_placement_bateaux(x, y, bateau, sens, grille, "ia")
-	return grille
+        p=1
+        for bateau in NAVIRES:
+            taille = NAVIRES[bateau]
+            possible = 0
+            while possible != 1:
+                x = random.randint(0,9)
+                y = random.randint(0,9)
+                sens = random.randint(1,2)
+                possible = Placement_possible(x, y, taille, sens, grille)
+            Init_placement_bateaux(x, y, bateau, sens, grille, "ia", p)
+            p=p+1
+        return grille
             
 
 

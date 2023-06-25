@@ -17,7 +17,7 @@ def play(largeur, hauteur):
     
     score_player = 25
     score_ia = 25
-
+    dernier_tir_reussi = None
     # print (bateaux_ia)
 
     running = True
@@ -39,11 +39,12 @@ def play(largeur, hauteur):
             pygame.display.flip()
 
             # print(Placement_bateau_player(bateaux_player))
-            bateaux_player = place.placement_bateaux()
+            bateaux_player, pouvoir, niveau = place.placement_bateaux()
             # print (bateaux_player)
 
             # print (bateaux_ia)    
-            affGrille.affGrille(bateaux_player, tirs_player, score_player, score_ia, bateaux_ia, tirs_ia)
+
+            affGrille.affGrille(bateaux_player, tirs_player, niveau, dernier_tir_reussi, bateaux_ia, tirs_ia, pouvoir)
 
 
             # Tour_de_jeu(tirs_player, 'player')

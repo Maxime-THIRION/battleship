@@ -10,12 +10,12 @@ def finpartie(bateau_pla, bateau_ia):
     
     for ligne in bateau_pla:
         for case in ligne:
-            if case == 1:
+            if case == 1 or case == 2 or case == 3 or case == 4 or case == 5:
                 x=x+1
 
     for ligne in bateau_ia:
         for case in ligne:
-            if case == 1:
+            if case == 1 or case == 2 or case == 3 or case == 4 or case == 5:
                 y=y+1
 
     if x==0 or y==0:
