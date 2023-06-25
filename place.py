@@ -177,11 +177,7 @@ def placement_bateaux():
         if niveau > 0:
             niveau_texte = f"Niveau IA: {niveau}   (Appuyez sur 1, 2 ou 3 pour changer le niveau)"
             texte_orientation = police.render(niveau_texte, True, COULEUR_TEXTE)
-            fenetre.blit(texte_orientation, (120, 105))
-
-        #80, 105, 130, 155
-
-
+            fenetre.blit(texte_orientation, (120, 105)) 
 
         # Afficher le texte de confirmation
         if pouvoir == '':
