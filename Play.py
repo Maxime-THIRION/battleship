@@ -1,7 +1,8 @@
 import pygame
 from Function import *
 import random
-from test import *
+# from test import *
+from test import init_grille, Placement_bateaux_aleatoire
 import place
 import affGrille
 # import round 
