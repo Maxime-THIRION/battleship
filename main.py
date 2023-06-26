@@ -2,7 +2,6 @@ import pygame
 from Homepage import *
 from Rules import *
 from Play import *
-from fin import *
 pygame.init()
 
 # Définir les dimensions de la fenêtre
