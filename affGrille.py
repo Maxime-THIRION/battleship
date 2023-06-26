@@ -276,7 +276,7 @@ def affGrille(grille_pla, grille_tir_pla, niveau, dernier_tir_reussi, bateaux_ia
                         print("Vous avez déjà tiré en", ligne, colonne, ", choisissez une autre case")
 
 
-                if finpartie(grille_pla, bateaux_ia)=='Défaite':
+                if finpartie(grille_pla, bateaux_ia)=='Défaite' or finpartie(grille_pla, bateaux_ia)=='Victoire':
                     #running = False
                     result = finpartie(grille_pla, bateaux_ia)
                     fin_partie = 1
